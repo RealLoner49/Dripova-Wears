@@ -1,0 +1,104 @@
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+.product-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.product-img { height: 330px; position: relative; overflow: hidden; }
+.product-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .55s ease; }
+.product-card:hover .product-img img { transform: scale(1.08); }
+.badge, .soldout {
+  position: absolute;
+  top: 16px; left: 16px;
+  display: inline-flex; gap: 6px; align-items: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(0,0,0,.55);
+  color: white;
+  font-size: 13px;
+  font-weight: 900;
+}
+.soldout { left: auto; right: 16px; background: var(--danger); }
+.product-info { padding: 22px; }
+.category {
+  color: var(--accent);
+  font-weight: 900;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+.product-info h3 { margin: 8px 0; font-size: 24px; letter-spacing: -.04em; }
+.product-info p:not(.category) { color: var(--muted); line-height: 1.55; }
+.product-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-top: 18px;
+}
+.product-bottom strong { display: block; font-size: 22px; }
+.product-bottom del { color: var(--muted); }
+.round-buy {
+  width: 48px; height: 48px; border-radius: 50%;
+  border: 0;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: white;
+  display: grid; place-items: center;
+}
+.round-buy:disabled { opacity: .45; cursor: not-allowed; }
+
+.product-modal {
+  position: relative;
+  width: min(900px, 100%);
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 34px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.product-modal img {
+  width: 100%;
+  height: 100%;
+  min-height: 430px;
+  object-fit: cover;
+}
+
+.product-modal-body {
+  padding: 34px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.product-modal-body h2 {
+  font-size: 36px;
+  margin: 10px 0;
+}
+
+.product-modal-body p {
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+.product-modal-body h3 {
+  font-size: 30px;
+  margin: 10px 0 24px;
+}
+
+@media (max-width: 760px) {
+  .product-modal {
+    grid-template-columns: 1fr;
+  }
+
+  .product-modal img {
+    min-height: 280px;
+  }
+}
