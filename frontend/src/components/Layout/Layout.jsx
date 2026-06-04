@@ -12,8 +12,6 @@ import {
   Menu,
   X,
   ShoppingBag,
-  Moon,
-  Sun,
   LogOut,
   ShieldCheck,
 } from "lucide-react";
@@ -36,7 +34,6 @@ export default function Layout() {
   const {
     isLoggedIn,
     isAdmin,
-    user,
     openAuth,
     signOut,
   } = useAuth();
@@ -56,6 +53,18 @@ export default function Layout() {
 
   const closeMenu = () => {
     setMenuOpen(false);
+  };
+
+  const askLogout = () => {
+    setMenuOpen(false);
+
+    setShowLogoutConfirm(true);
+  };
+
+  const askLogin = () => {
+    setMenuOpen(false);
+
+    openAuth("login");
   };
 
   async function handleLogout() {
@@ -128,6 +137,39 @@ export default function Layout() {
               Admin
             </NavLink>
           )}
+
+           <button
+            type="button"
+            className="nav-menu-action"
+            onClick={() =>
+              setDark((value) => !value)
+            }
+          >
+            {dark ? "Light" : "Dark"}
+          </button>
+
+          {isLoggedIn && (
+            <button
+              type="button"
+              className="nav-menu-action logout-menu-btn"
+              onClick={askLogout}
+            >
+              <LogOut size={17} />
+              Logout
+            </button>
+          )}
+
+         
+
+          {!isLoggedIn && (
+            <button
+              type="button"
+              className="nav-menu-action"
+              onClick={askLogin}
+            >
+              Login
+            </button>
+          )}
         </nav>
 
         <div className="nav-actions">
@@ -140,45 +182,6 @@ export default function Layout() {
 
             <span>{count}</span>
           </NavLink>
-
-          <button
-            className="icon-btn"
-            onClick={() =>
-              setDark((value) => !value)
-            }
-            title="Dark mode"
-          >
-            {dark ? (
-              <Sun size={20} />
-            ) : (
-              <Moon size={20} />
-            )}
-          </button>
-
-          {!isLoggedIn ? (
-            <button
-              className="primary-btn small"
-              onClick={() => openAuth("login")}
-            >
-              Login
-            </button>
-          ) : (
-            <button
-              className="user-pill"
-              onClick={() =>
-                setShowLogoutConfirm(true)
-              }
-              title="Logout"
-            >
-              <span>
-                {user?.email
-                  ?.slice(0, 1)
-                  .toUpperCase()}
-              </span>
-
-              <LogOut size={16} />
-            </button>
-          )}
 
           <button
             className="menu-btn"

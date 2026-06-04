@@ -5,6 +5,7 @@ import React, {
 
 import {
   Edit,
+  ImagePlus,
   Plus,
   Save,
   Search,
@@ -28,6 +29,21 @@ const emptyForm = {
   stock: 1,
   featured: false,
 };
+
+function formatMoneyInput(value) {
+  const numbersOnly = String(value)
+    .replace(/[^\d]/g, "");
+
+  return numbersOnly
+    ? Number(numbersOnly).toLocaleString()
+    : "";
+}
+
+function parseMoneyInput(value) {
+  return Number(
+    String(value).replace(/,/g, "") || 0
+  );
+}
 
 export default function Admin() {
   const {
@@ -92,9 +108,15 @@ export default function Admin() {
     setForm({
       name: product.name || "",
       category: product.category || "",
-      price: product.price || "",
+      price: product.price
+        ? formatMoneyInput(product.price)
+        : "",
       old_price:
-        product.old_price || "",
+        product.old_price
+          ? formatMoneyInput(
+              product.old_price
+            )
+          : "",
       image_url:
         product.image_url || "",
       description:
@@ -125,12 +147,14 @@ export default function Admin() {
     return {
       ...payload,
 
-      price: Number(
-        payload.price || 0
+      price: parseMoneyInput(
+        payload.price
       ),
 
       old_price: payload.old_price
-        ? Number(payload.old_price)
+        ? parseMoneyInput(
+            payload.old_price
+          )
         : null,
 
       stock: Number(
@@ -196,6 +220,35 @@ export default function Admin() {
     } catch (error) {
       showToast(error.message);
     }
+  }
+
+  function handleImageSelect(event) {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+      showToast("Please select an image file.");
+
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      setForm((currentForm) => ({
+        ...currentForm,
+        image_url: reader.result,
+      }));
+    };
+
+    reader.onerror = () => {
+      showToast("Could not load that image.");
+    };
+
+    reader.readAsDataURL(file);
   }
 
   return (
@@ -341,7 +394,6 @@ export default function Admin() {
                 "category",
                 "price",
                 "old_price",
-                "image_url",
                 "stock",
               ].map((field) => (
                 <label key={field}>
@@ -355,11 +407,7 @@ export default function Admin() {
                       form[field]
                     }
                     type={
-                      field.includes(
-                        "price"
-                      ) ||
-                      field ===
-                        "stock"
+                      field === "stock"
                         ? "number"
                         : "text"
                     }
@@ -376,14 +424,55 @@ export default function Admin() {
                       setForm({
                         ...form,
                         [field]:
-                          event
-                            .target
-                            .value,
+                          field.includes(
+                            "price"
+                          )
+                            ? formatMoneyInput(
+                                event
+                                  .target
+                                  .value
+                              )
+                            : event
+                                .target
+                                .value,
                       })
                     }
                   />
                 </label>
               ))}
+            </div>
+
+            <div className="image-picker">
+              <div className="image-preview">
+                {form.image_url ? (
+                  <img
+                    src={form.image_url}
+                    alt="Selected product"
+                  />
+                ) : (
+                  <ImagePlus size={34} />
+                )}
+              </div>
+
+              <div className="image-picker-actions">
+                <span>Product picture</span>
+
+                <p>
+                  Choose an image from your device gallery.
+                </p>
+
+                <label className="file-btn">
+                  <ImagePlus size={18} />
+
+                  Select Picture
+
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageSelect}
+                  />
+                </label>
+              </div>
             </div>
 
             <label>

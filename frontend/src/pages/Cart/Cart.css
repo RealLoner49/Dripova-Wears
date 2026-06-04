@@ -128,11 +128,7 @@
   color: white;
   font-weight: 900;
   cursor: pointer;
-  background: linear-gradient(
-    135deg,
-    var(--accent),
-    var(--accent-2)
-  );
+  background: var(--accent);
   box-shadow: var(--shadow);
   transition: 0.25s ease;
 }
@@ -151,7 +147,7 @@
 }
 
 .continue-link:hover {
-  color: var(--accent-2);
+  color: var(--accent);
 }
 
 .empty-cart {

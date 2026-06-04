@@ -83,11 +83,7 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  background: linear-gradient(
-    135deg,
-    var(--accent),
-    var(--accent-2)
-  );
+  background: var(--accent);
   box-shadow: var(--shadow);
 }
 

@@ -108,11 +108,7 @@
   font-size: 16px;
   border-radius: 16px;
   padding: 16px;
-  background: linear-gradient(
-    135deg,
-    #d89a3d,
-    #7c3aed
-  );
+  background: var(--accent);
   transition: .25s ease;
 }
 
